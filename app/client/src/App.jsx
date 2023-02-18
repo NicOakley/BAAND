@@ -1,7 +1,8 @@
 import Home from './pages/Home';
 import Dash from './pages/Dash'
-import Register from './pages/Register'
+import Register from './components/Register'
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import OnBoarding from './pages/OnBoarding';
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
         <Route path={"/home"} element={<Home/>}></Route>
         <Route path={"/register"} element={<Register/>}></Route>
         <Route path={"/dashboard"} element={<Dash/>}></Route>
+        <Route path={"/onboarding"} element={<OnBoarding/>}></Route>
       </Routes>
     </BrowserRouter>
   )

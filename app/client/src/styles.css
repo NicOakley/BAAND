@@ -1,0 +1,410 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Monoton&family=Oswald:wght@200;300;400&display=swap');
+
+
+html{
+    font-family: 'Oswald', sans-serif;
+    height: 100%;
+}
+
+
+*{
+    margin: 0;
+    padding: 0;
+
+}
+
+body{
+    text-align: center;
+    background: #0a0a0a;
+    color: white;
+    height: 100%;
+
+}
+
+/* ===== Scrollbar ======= */
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background:rgba(24, 24, 24, 0.993);
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(233, 194, 24);
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgb(189, 160, 30);
+  }
+
+
+.home{
+    padding-top: 200px;
+    background-image:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0)), url(./assets/newbg2.jpg);
+    background-repeat: no-repeat;
+    background-position:top;
+    background-attachment: fixed;
+    height: 100%;
+
+}
+
+
+
+
+.home .title {
+    font-family: 'Monoton';
+    font-size: clamp(75px, 6vw, 150px);
+    font-weight: 400;
+    /* color: #11e747; */
+    color:rgb(233, 194, 24);
+    cursor: default;
+}
+
+
+.home .slogan {
+    margin-top: -10px;
+    margin-bottom: 120px;
+    cursor: default;
+}
+
+.home .content{
+    height: 700px;
+    /* background:rgba(24, 24, 24, 0.993); */
+    background: #0a0a0a;
+}
+
+
+
+
+.register-button{
+    font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    color: rgb(21, 27, 22);
+    /* background: linear-gradient(57.37deg, #4d8a2f -6.87%, #11e747 7.8%); */
+    background: rgb(233, 194, 24);
+    border-radius: 25px;
+    padding: 12px 30px;
+    cursor: pointer;
+    height: 40px;
+    width: 250px;
+    border: none;
+    font-size: 20px;
+    padding-top:3px ;
+    margin-bottom: 350px;
+    
+    
+}
+
+.register-button:hover{
+    color:#f3f3f3;
+}
+
+
+
+
+/* ========Navbar========= */
+nav {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    padding-bottom: 70px;
+    justify-content: space-between;
+    background: linear-gradient(180deg, #000000 0%, rgba(0, 0, 0, 0.027) 100%);
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+nav .logo-container {
+    width: 150px;
+    margin: 12px;
+    cursor: pointer;
+}
+
+nav .logo-container .logo {
+    font-family: 'Monoton';
+    font-weight: lighter;
+    font-size: 26px;
+}
+
+nav .nav-button {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Oswald', sans-serif;
+    text-align: center;
+    font-size: 18px;
+    max-height: 20px;
+    margin: 15px;
+    width: 120px;
+    border: none;
+    border-radius: 25px;
+    padding: 16px;
+    cursor: pointer;
+    color:#000000;
+}
+
+nav .nav-button:hover{
+    background:rgb(185, 185, 185);
+}
+
+nav .logo span {
+    /* color: #11e747; */
+    color:rgb(233, 194, 24);
+}
+
+/*========= Register modal ==========*/
+
+.register-background{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0%;
+    left: 0;
+    background: rgba(255, 255, 255, 0);
+}
+
+
+.register-container {
+    width: 500px;
+    max-height: 700px;
+    background: #0a0a0a;
+    border-radius: 25px;
+    padding: 20px;
+    display: grid;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    border:rgb(36, 36, 36) 1px solid;
+}
+
+.register-container h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(40px, 5vw, 40px);
+    color: rgb(233, 194, 24);
+    margin-bottom: 10px;
+}
+
+.register-container .form {
+    display:block;
+    height: 500px;
+    
+}
+
+
+.register-container .form .input-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.register-container .form .input-field input{
+    width: 200px;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    font-size: 18px;
+    font-family: 'Oswald', sans-serif;
+    color: rgb(233, 194, 24);
+    background: #0a0a0a;
+    border: 1px solid rgb(233, 194, 24);
+    margin-top: 10px;
+    text-align: center;
+}
+
+.register-container .form label {
+    margin-top: 10px;
+}
+
+.register-container button {
+    font-family: 'Oswald', sans-serif;
+    font-weight: bold;
+    color: rgb(21, 27, 22);
+    background: rgb(233, 194, 24);
+    border-radius: 25px;
+    padding: 12px 30px;
+    cursor: pointer;
+    height: 40px;
+    width: 250px;
+    border: none;
+    font-size: 20px;
+    padding-top:3px ;
+    margin-top: 40px;
+    margin-bottom: 20px;
+
+}
+
+.register-container button:hover{
+    color:#f3f3f3;
+}
+
+.exit-button {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    font-size: 30px;
+    color: rgba(255, 255, 255, 0.719);
+    cursor: pointer;
+}
+
+@media (max-width: 468px) {
+    .register-container {
+        width: 100%;
+        height: 100%;
+    }
+}
+    
+
+
+/* ====== onboarding ======= */
+.onboarding {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: -20%;
+    left: 0;
+    background: rgba(255, 255, 255, 0);
+}
+
+.slider {
+    animation: slide .9s ease-in-out;
+    position: relative;
+}
+
+.onboarding-title {
+    position: relative;
+    top: 0%;
+    font-size: clamp(15px, 3vw, 25px);
+}
+
+@keyframes slide {
+    0% {
+        filter: blur(0px);
+        left: 0%;
+    }
+
+    10%{
+        filter: blur(1px);
+    }
+
+    50% {
+        filter: blur(2px);
+        left: 100%;
+    }
+
+    51% {
+        filter: blur(5px);
+        left: -800%;
+    }
+
+    100% {
+        filter: blur(0px);
+        left: 0%;
+    }
+}
+
+.onboarding-input-text{
+    animation: shrink .3s ease-in-out;
+    position: relative;
+    top: 50%;
+    width: 200px;
+    border-radius: 10px;
+    border: none;
+    padding: 10px;
+    font-size: clamp(10px, 3vw, 20px);
+    font-family: 'Oswald', sans-serif;
+    color: rgb(233, 194, 24);
+    background: #0a0a0a;
+    border: 1px solid rgb(255, 255, 255);
+    margin-top: 10px;
+    text-align: center;
+}
+
+
+@keyframes grow {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}
+
+@keyframes shrink {
+    0% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* increase text size in input box animation on active text */
+.onboarding-input input:focus {
+    animation: grow 0.3s ease-in forwards;
+}
+
+.onboarding-next {
+    position: relative;
+    top:9%;
+    font-size: clamp(10px, 3vw, 30px);
+}
+
+.onboarding-next button {
+    background: #0a0a0a;
+    border: none;
+}
+
+.onboarding-next button svg {
+    background: rgb(233, 194, 24);
+    margin-top: -10px;
+    padding: 10px;
+    border-radius: 50%;
+
+}
+
+.onboarding-next button svg:hover {
+    background: rgb(207, 175, 31);
+}
+
+.onboarding .instrument-selection {
+    display: inline-block;
+    margin-top: 20px;
+    width: 250px;
+}
+
+.onboarding .instrument-selection-item {
+    margin: 3px;
+    height: 40px;
+    width: 75px;
+    border-radius: 10px;
+    background: #eeeeee;
+    cursor: pointer;
+    font-size: 14px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+}
+
+
+.invisible {
+    display: none;
+    height: 0px;
+    width: 0px;
+}
