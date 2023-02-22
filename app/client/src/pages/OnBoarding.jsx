@@ -26,8 +26,8 @@ const OnBoarding = () => {
     var initialText = "What's your name?";
     var questions = [
         "How old are you?", 
-        "Your instrument is...",
-        "Seeking someone playing...", ];
+        "You play...",
+        "Seeking...", ];
 
     // Show text input
     const showTextInput = () => { setTextInputClass("onboarding-input-text"); }
@@ -58,10 +58,9 @@ const OnBoarding = () => {
     const [textInputClass, setTextInputClass] = useState("onboarding-input-text");
     const [instrumentSelectionClass, setInstrumentSelectionClass] = useState("invisible");
     const [seekingSelectionClass, setSeekingSelectionClass] = useState("invisible");
-
     const [text, setText] = useState(initialText);
 
-    console.log(currentInput, firstName);
+    console.log(currentInput, firstName, age);
     
     // handle click event
     const handleClick = async event => {
@@ -75,11 +74,14 @@ const OnBoarding = () => {
 
         if(currentQuestion == 0) {
             setFirstName(currentInput);
-            console.log(firstName);
+            setCurrentInput("");
+            
             continueToNextStage();
          
         }
         else if(currentQuestion == 1) {
+            setAge(currentInput);
+            setCurrentInput("");
             continueToNextStage();
             await sleep(270);
             hideTextInput();
@@ -92,8 +94,12 @@ const OnBoarding = () => {
     }
 
 
+
     return(
 <>
+    <meta name="viewport" 
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+      </meta>
         <div className="onboarding-wrapper">
             <div className="onboarding">
                 <div className={titleClass}>
@@ -104,6 +110,7 @@ const OnBoarding = () => {
                     className={textInputClass} 
                     type="text" 
                     placeholder=""
+                    value={currentInput}
                     onChange={(e) => setCurrentInput(e.target.value)}/>
 
                     {/* You are a... */}

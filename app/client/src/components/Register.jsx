@@ -1,6 +1,8 @@
 import {useState} from 'react';
 import axios from 'axios';
 
+const HOST_IP_ADDRESS = "192.168.0.10";
+
 const Register = ({setShowRegister}) => {
 
     const [email, setEmail] = useState(null);
@@ -19,10 +21,11 @@ const Register = ({setShowRegister}) => {
         e.preventDefault();
         if(password == confirmPassword)
         try {
-            const response = await axios.post('http://localhost:8007/signup', {email, password})
+            const response = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/signup', {email, password})
             const success = response.status === 201;
             if(success){
                 console.log("success");
+                // Could get users unique ID here and store it in local storage then pass to url with window.open
                 window.open('/onboarding', '_self');         
     } 
 } catch (error) {
