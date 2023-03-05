@@ -34,6 +34,7 @@ app.post('/signup', async (req, res) => {
             password: password,
             registered: 1,
         }
+        
 
         const newUser = await users.insertOne(data);
         return res.status(201).json({message: 'User created'});
@@ -118,6 +119,63 @@ app.post('/regstatus', async (req, res) => {
         res.status(500).json({message: 'Something went wrong'});
     }
 });
+
+app.post('/getuserid', async (req, res) => {
+    const client = new MongoClient(uri);
+    try{
+        const { email } = req.body;
+        const database = client.db('BAAND');
+
+        const query = { email: email };
+        const options = {
+            sort: { _id: -1 },
+            projection: { _id: 0, userid: 1},
+        };
+        const id = await database.collection('users').findOne(query, options);
+        console.log(id);
+        return res.status(201).json({id: id});
+    } catch {
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
+// updateOne user given userid
+app.post('/onboard', async (req, res) => {
+    const client = new MongoClient(uri);
+    try{
+        const {userid, age, name, instruments, seeking} = req.body;
+        const database = client.db('BAAND');
+        const users = database.collection('users');
+        console.log(req.body);
+
+        users.updateOne({userid: userid}, {$set: {registered: 2, name: name, age: age, instruments: instruments, seeking: seeking}});
+        
+        return res.status(201).json({message: 'User onboarded'});
+    }catch {
+            res.status(500).json({message: 'Something went wrong'});
+        }
+    
+});
+
+// reset database
+app.delete('/reset', async (req, res) => {
+    console.log('resetting database')
+    const client = new MongoClient(uri);
+    try{
+        await client.connect();
+        const database = client.db('BAAND');
+        const users = database.collection('users');
+
+        users.deleteMany({registered:1});
+        
+        return res.status(201).json({message: 'Database reset'});
+    }catch {
+            res.status(500).json({message: 'Something went wrong'});
+    }
+});
+
+
+
 
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));

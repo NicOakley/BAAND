@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import OnBoarding from './pages/OnBoarding';
 
 function App() {
+  
 
   return (
     <BrowserRouter>
@@ -15,6 +16,7 @@ function App() {
         <Route path={"/dashboard"} element={<Dash/>}></Route>
         <Route path={"/onboarding"} element={<OnBoarding/>}></Route>
       </Routes>
+
     </BrowserRouter>
   )
 }

@@ -1,9 +1,17 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
 
-const HOST_IP_ADDRESS = "192.168.0.10";
+import { createBrowserHistory } from "history";
+import qs from 'qs';
+
+const HOST_IP_ADDRESS = "192.168.2.11";
+
+
 
 const Register = ({setShowRegister}) => {
+
+    
+
 
     const [email, setEmail] = useState(null);
     const [password, setPassword] = useState(null);
@@ -19,18 +27,27 @@ const Register = ({setShowRegister}) => {
 
     const handleClick = async (e) => {
         e.preventDefault();
-        if(password == confirmPassword)
-        try {
+        // if email doesnt contain @ or . then alert user
+        // check if passwords match before sending to server
+        if(password == confirmPassword){
+            if(email && !email.includes("@") || !email.includes(".")) alert("Please enter a valid email address");
+            else try {
             const response = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/signup', {email, password})
             const success = response.status === 201;
             if(success){
                 console.log("success");
-                // Could get users unique ID here and store it in local storage then pass to url with window.open
-                window.open('/onboarding', '_self');         
+                // get userid from server and store in local storage
+                const checkID = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/getuserid', {email});
+                console.log(checkID);
+                    console.log("userid retrieved");
+                    localStorage.setItem('userID', checkID.data.id.userid);
+                    window.open('/onboarding', '_self');
+                     
     } 
 } catch (error) {
     console.log(error);
-    
+}
+
 }
 else {
     alert("Passwords do not match");

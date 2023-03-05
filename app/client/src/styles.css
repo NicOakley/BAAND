@@ -395,12 +395,12 @@ nav .logo span {
     height: 40px;
     width: 75px;
     border-radius: 10px;
-    background: #eeeeee;
     cursor: pointer;
     font-size: 14px;
     font-family: 'Oswald', sans-serif;
     font-weight: 600;
 }
+
 
 .selected {
     background: rgb(233, 194, 24);

@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import axios from 'axios';
 const Login = ({setShowLogin}) => {
+    const HOST_IP_ADDRESS = "192.168.2.11"
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -14,7 +15,7 @@ const Login = ({setShowLogin}) => {
         e.preventDefault();
         try {
             console.log("Attempting to log in");
-            const response = await axios.post('http://192.168.0.10:8007/login', {email, password})
+            const response = await axios.post('http://192.168.2.11:8007/login', {email, password})
             const success = response.status === 201;
 
             // on successful login - check registration status of user and redirect to appropriate page
@@ -22,7 +23,7 @@ const Login = ({setShowLogin}) => {
                 console.log("login success");
 
                 // check registration status of user
-                const checkRegistered = await axios.post('http://192.168.0.10:8007/regstatus', {email})
+                const checkRegistered = await axios.post('http://192.168.2.11:8007/regstatus', {email})
                 // status codes
                 const notRegistered = checkRegistered.status === 201;
                 const registered = checkRegistered.status === 202;
@@ -37,15 +38,20 @@ const Login = ({setShowLogin}) => {
                 if(registered){
                     console.log("user registered but not onboarded");
 
-                    // redirect to onboarding page with user id in url
-                    window.open('/onboarding', '_self');
-
+                    // redirect to onboarding page with user id in localstorage
+                    const checkID = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/getuserid', {email});
+                    localStorage.setItem('userID', checkID.data.id.userid);
+                    window.open('/dashboard', '_self');
 
                 }
 
                 // if user is onboarded
                 if(onboarded){
                     console.log("user onboarded");
+                    const checkID = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/getuserid', {email});
+                    localStorage.setItem('userID', checkID.data.id.userid);
+                    window.open('/dashboard', '_self');
+
                 }
 
 
