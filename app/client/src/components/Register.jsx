@@ -39,10 +39,9 @@ const Register = ({setShowRegister}) => {
                 // get userid from server and store in local storage
                 const checkID = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/getuserid', {email});
                 console.log(checkID);
-                    console.log("userid retrieved");
-                    localStorage.setItem('userID', checkID.data.id.userid);
-                    window.open('/onboarding', '_self');
-                     
+                console.log("userid retrieved");
+                localStorage.setItem('userID', checkID.data.id.userid);
+                window.open('/onboarding', '_self');               
     } 
 } catch (error) {
     console.log(error);

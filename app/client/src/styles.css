@@ -415,3 +415,27 @@ nav .logo span {
 }
 
 
+/* Profile */
+.profile-container{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.image-container .image {
+    height: 200px;
+    width: 33%;
+    border-color: #0a0a0a;
+    margin-right: 5px;
+    background: #0a0a0a;
+
+}
+

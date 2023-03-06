@@ -41,7 +41,7 @@ const Login = ({setShowLogin}) => {
                     // redirect to onboarding page with user id in localstorage
                     const checkID = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/getuserid', {email});
                     localStorage.setItem('userID', checkID.data.id.userid);
-                    window.open('/dashboard', '_self');
+                    window.open('/onboarding', '_self');
 
                 }
 

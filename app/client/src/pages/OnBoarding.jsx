@@ -1,4 +1,5 @@
 import Nav from '../components/Nav'
+import Profile from '../components/Profile'
 import {useState, useEffect} from 'react';
 import axios from 'axios';
 
@@ -10,7 +11,7 @@ const sleep = ms => new Promise(
   );
 
 const OnBoarding = () => {
-    // print userid from local storage
+    // Print userid from local storage
     console.log(localStorage.getItem("userID"));
     const currentUser = localStorage.getItem("userID");
 
@@ -35,7 +36,6 @@ const OnBoarding = () => {
         "You play...",
         "Seeking...",
         "Create your profile"
-    
     ];
 
     // Show text input
@@ -68,6 +68,7 @@ const OnBoarding = () => {
     const [text, setText] = useState(initialText);
     const [instrumentArray, setInstrumentArray] = useState([]);
     const [seekingInstrumentArray, setSeekingArray] = useState([]);
+    const [showProfile, setShowProfile] = useState(false);
 
 
     console.log(currentInput, firstName, age, instrumentArray, seekingInstrumentArray);
@@ -82,15 +83,18 @@ const OnBoarding = () => {
             setInputClass("onboarding-input invisible");
 
             // Send data to mongodb
-             //const response = await axios.delete('http://192.168.2.11:8007/reset');
+            // Const response = await axios.delete('http://192.168.2.11:8007/reset');
 
-            // check no fields are empty
-            if(firstName == "" || age == null || instrumentArray.length == 0 || seekingInstrumentArray.length == 0){
+            // Check no fields are empty
+            if(firstName == "" || age == "" || instrumentArray.length == 0 || seekingInstrumentArray.length == 0){
                 alert("Error - Please fill out all fields");
                 window.open("/onboarding", "_self");
             }
+            else{
             const response = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/onboard', 
             {userid: currentUser,name: firstName,age: age,instruments: instrumentArray,seeking:seekingInstrumentArray});
+            window.open("/dashboard", "_self");
+            }
 
 
         }
@@ -118,10 +122,7 @@ const OnBoarding = () => {
             setSeekingSelectionClass("invisible");
             continueToNextStage();
         }
-
     }
-    
-
 
     const handlePlaysClick = async event => {
         // GUITAR - if guitar is clicked
@@ -294,8 +295,8 @@ const OnBoarding = () => {
                     instrumentArray.push("bagpipes");
                 console.log(instrumentArray);
             }
-        }
-    
+    }
+
     const handleSeekingClick = (event) => {
         // GUITAR - if guitar is clicked
         if(event.target.id == "guitar-seek") {
@@ -336,7 +337,7 @@ const OnBoarding = () => {
         }
 
         // DRUMS - if drums is clicked
-        if(event.target.id == "drums-plays") {
+        if(event.target.id == "drums-seek") {
             //check if instrument is in instrumentArray
             if(seekingInstrumentArray.includes("drums")){
                 // remove drums from instrumentArray
@@ -467,9 +468,7 @@ const OnBoarding = () => {
                     seekingInstrumentArray.push("bagpipes");
                 console.log(seekingInstrumentArray);
             }
-        }
-
-
+    }
 
 
     return(
@@ -514,8 +513,14 @@ const OnBoarding = () => {
                         <button id="banjo-seek" className="instrument-selection-item" onClick={handleSeekingClick}>BANJO</button>
                         <button id="bagpipes-seek" className="instrument-selection-item" onClick={handleSeekingClick}>BAGPIPES</button>
                     </div>
-
                 </div>
+
+                {/* Profile react component */}
+                <div className="profile-container">
+                {showProfile && (<Profile setShowProfile={setShowProfile}></Profile>)}
+                </div>
+                
+
                 <div className="onboarding-next">
                     <button onClick={handleClick}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="41" height="38" fill="" viewBox="0 0 41 38">
