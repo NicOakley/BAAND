@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
 const Login = ({setShowLogin}) => {
     const HOST_IP_ADDRESS = "192.168.2.11"
@@ -10,6 +10,15 @@ const Login = ({setShowLogin}) => {
     const exitLogin = () => {
         setShowLogin(false);
     }
+
+    // if enter key is hit handleClick()
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if(e.key === "Enter") handleLogIn(e);
+        }
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [email, password]);
 
     const handleLogIn = async (e) => {
         e.preventDefault();

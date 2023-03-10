@@ -25,12 +25,25 @@ const Register = ({setShowRegister}) => {
         setShowRegister(false);
     }
 
+    // if enter key is hit handleClick()
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if(e.key === "Enter") handleClick(e);
+        }
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [email, password, confirmPassword]);
+
+    
+
     const handleClick = async (e) => {
         e.preventDefault();
-        // if email doesnt contain @ or . then alert user
         // check if passwords match before sending to server
         if(password == confirmPassword){
+            // if email doesnt contain @ or . then alert user
             if(email && !email.includes("@") || !email.includes(".")) alert("Please enter a valid email address");
+            // check if fields are empty
+            else if(!email || !password || !confirmPassword) alert("Please fill in all fields");
             else try {
             const response = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/signup', {email, password})
             const success = response.status === 201;

@@ -72,6 +72,15 @@ const OnBoarding = () => {
 
 
     console.log(currentInput, firstName, age, instrumentArray, seekingInstrumentArray);
+
+    // enter key -> handle click
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if(e.key === "Enter") handleClick(e);
+        }
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [currentInput]);
     
     // handle click event
     const handleClick = async event => {
