@@ -18,7 +18,7 @@ const Home = () => {
         <div className="home">
         <Nav></Nav>
             <div className="title-background">
-                <h1 className="title">BAAND</h1>
+                <h1 className="title">BAAND<span>.</span></h1>
                 <h2 className="slogan">FIND YOUR BAAND</h2>
             </div>
             <button className="register-button" onClick={handleClick}>Create Account</button>
