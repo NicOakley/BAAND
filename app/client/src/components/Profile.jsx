@@ -6,8 +6,9 @@ const Profile = () => {
 
     return(
     <>
-        {/* form */}
+        {/* finsh profile form */}
         <div className="profile-container">
+            <h2>Upload Photos</h2>
             <div className="image-container">
             <input className="image" type="text" placeholder="+"/>
             <input className="image" type="text" placeholder="+"/>
@@ -17,6 +18,11 @@ const Profile = () => {
             <input className="image" type="text" placeholder="+"/>
             <input className="image" type="text" placeholder="+"/>
             <input className="image" type="text" placeholder="+"/>
+            </div>
+
+            <div>
+                <h2>Bio</h2>
+                <textarea className="bio" placeholder="About you"></textarea>
             </div>
         </div>
 

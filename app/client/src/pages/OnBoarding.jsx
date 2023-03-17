@@ -5,7 +5,7 @@ import axios from 'axios';
 
 var currentQuestion = 0;
 const numQuestions = 5;
-const HOST_IP_ADDRESS = "192.168.2.11";
+const HOST_IP_ADDRESS = "localhost";
 const sleep = ms => new Promise(
     resolve => setTimeout(resolve, ms)
   );
@@ -68,7 +68,8 @@ const OnBoarding = () => {
     const [text, setText] = useState(initialText);
     const [instrumentArray, setInstrumentArray] = useState([]);
     const [seekingInstrumentArray, setSeekingArray] = useState([]);
-    const [showProfile, setShowProfile] = useState(false);
+
+    const [profileClass, setProfileClass] = useState("invisible");
 
 
     console.log(currentInput, firstName, age, instrumentArray, seekingInstrumentArray);
@@ -90,20 +91,57 @@ const OnBoarding = () => {
             console.log("done");
             setTitleClass("onboarding-title invisible");
             setInputClass("onboarding-input invisible");
+            setProfileClass("invisible");
 
-            // Send data to mongodb
-            // Const response = await axios.delete('http://192.168.2.11:8007/reset');
+            // get image-text field values
+            var image1 = document.getElementById("image1").value;
+            var image2 = document.getElementById("image2").value;
+            var image3 = document.getElementById("image3").value;
+            var image4 = document.getElementById("image4").value;
+            var image5 = document.getElementById("image5").value;
+            var image6 = document.getElementById("image6").value;
 
-            // Check no fields are empty
-            if(firstName == "" || age == "" || instrumentArray.length == 0 || seekingInstrumentArray.length == 0){
+            // create array of images
+            // if the value of the image is not empty, add it to the array
+            var imageArray = [];
+            if(image1 != "") imageArray.push(image1);
+            if(image2 != "") imageArray.push(image2);
+            if(image3 != "") imageArray.push(image3);
+            if(image4 != "") imageArray.push(image4);
+            if(image5 != "") imageArray.push(image5);
+            if(image6 != "") imageArray.push(image6);
+
+
+            // make sure at least one image is filled out
+            var atLeastOneImage = false;
+            for(var i = 0; i < imageArray.length; i++){
+                if(imageArray[i] != ""){
+                    atLeastOneImage = true;
+                    break;
+                }
+            }   
+
+            // get bio-text field value
+            var bio = document.getElementById("bio").value;
+
+
+            // Error checking
+            if(
+             firstName == "" || age == "" || instrumentArray.length == 0 ||
+             seekingInstrumentArray.length == 0 || bio == "" || atLeastOneImage == false
+             ){
                 alert("Error - Please fill out all fields");
                 window.open("/onboarding", "_self");
             }
             else{
+            // send to server
             const response = await axios.post('http://'+ HOST_IP_ADDRESS +':8007/onboard', 
-            {userid: currentUser,name: firstName,age: age,instruments: instrumentArray,seeking:seekingInstrumentArray});
+            {userid: currentUser,name: firstName,age: age,instruments: instrumentArray,
+                seeking:seekingInstrumentArray, image1: image1, image2: image2, image3: image3,
+                image4: image4, image5: image5, image6: image6, bio: bio});
             window.open("/dashboard", "_self");
             }
+
 
 
         }
@@ -130,6 +168,7 @@ const OnBoarding = () => {
         else if(currentQuestion == 3) {
             setSeekingSelectionClass("invisible");
             continueToNextStage();
+            setProfileClass("profile-container");
         }
     }
 
@@ -522,12 +561,28 @@ const OnBoarding = () => {
                         <button id="banjo-seek" className="instrument-selection-item" onClick={handleSeekingClick}>BANJO</button>
                         <button id="bagpipes-seek" className="instrument-selection-item" onClick={handleSeekingClick}>BAGPIPES</button>
                     </div>
+
                 </div>
 
-                {/* Profile react component */}
-                <div className="profile-container">
-                {showProfile && (<Profile setShowProfile={setShowProfile}></Profile>)}
+                         {/* finsh profile form */}
+            <div className={profileClass}>
+                <h2>Upload Photos</h2>
+                <div className="image-container">
+                    <input id="image1" className="image" type="text" placeholder="+"/>
+                    <input id="image2" className="image" type="text" placeholder="+"/>
+                    <input id="image3" className="image" type="text" placeholder="+"/>
                 </div>
+                <div className="image-container">
+                    <input id="image4" className="image" type="text" placeholder="+"/>
+                    <input id="image5" className="image" type="text" placeholder="+"/>
+                    <input id="image6" className="image" type="text" placeholder="+"/>
+                </div>
+                <div>
+                <h2>Bio</h2>
+                <textarea id="bio" className="bio" placeholder="About you"></textarea>
+                </div>
+            </div>
+
                 
 
                 <div className="onboarding-next">

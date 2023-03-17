@@ -421,25 +421,44 @@ nav .logo span {
 
 /* Profile */
 .profile-container{
-    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
 }
 .image-container {
-    display: flex;
+
     justify-content: center;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .image-container .image {
-    height: 200px;
-    width: 33%;
-    border-color: #0a0a0a;
+    height: 50px;
+    width: 100px;
+    border: none;
     margin-right: 5px;
-    background: #0a0a0a;
+    background: #ffffff;
+    text-align: center;
+    border-radius: 5px;
 
+}
+
+.profile-container h2 {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.profile-container .bio {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    height: 50px;
+    width: 200px;
+    padding: 5px;
 }
 

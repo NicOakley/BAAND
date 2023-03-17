@@ -143,12 +143,18 @@ app.post('/getuserid', async (req, res) => {
 app.post('/onboard', async (req, res) => {
     const client = new MongoClient(uri);
     try{
-        const {userid, age, name, instruments, seeking} = req.body;
+        const {userid, age, name, instruments, seeking, image1, image2, image3, image4, image5, image6, bio} = req.body;
         const database = client.db('BAAND');
         const users = database.collection('users');
         console.log(req.body);
 
-        users.updateOne({userid: userid}, {$set: {registered: 2, name: name, age: age, instruments: instruments, seeking: seeking}});
+        users.updateOne({userid: userid}, 
+            {$set: {registered: 2, name: name, age: age, 
+                instruments: instruments, seeking: seeking,
+                image1: image1, image2: image2, image3: image3, image4: image4, 
+                image5: image5, image6: image6, bio: bio
+            
+            }});
         
         return res.status(201).json({message: 'User onboarded'});
     }catch {
