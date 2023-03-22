@@ -163,6 +163,26 @@ app.post('/onboard', async (req, res) => {
     
 });
 
+
+// Get individual user
+app.get('/user', async (req, res) => {
+    const client = new MongoClient(uri)
+    const userId = req.query.userId
+
+    try {
+        await client.connect()
+        const database = client.db('BAAND')
+        const users = database.collection('users')
+
+        const query = {userid: userId}
+        const user = await users.findOne(query)
+        res.send(user)
+
+    } finally {
+        await client.close()
+    }
+})
+
 // reset database
 app.delete('/reset', async (req, res) => {
     console.log('resetting database')
