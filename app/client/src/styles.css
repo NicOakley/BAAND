@@ -19,6 +19,7 @@ body{
     background: #0a0a0a;
     color: white;
     height: 100%;
+    overflow-x: hidden;
 
 }
 
@@ -462,19 +463,32 @@ nav .logo span {
     padding: 5px;
 }
 
-
-
-
 /* Dashboard */
-
-
 .dashboard {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0);
 }
 
+.dashboard .card-container {
+    top: -5%;
+    position: relative;
+    height: 60%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
 .dashboard .swipe-container {
-    width: 70%;
+    width:30%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -482,19 +496,103 @@ nav .logo span {
     height: 100vh;
 }
 
-.dashboard .card-container {
-    width: 400px;
-    height: 650px;
-}
-
+/* in center */
 .swipe {
     position: absolute;
+
+
 }
 
+/* position at bottom */
+.dash-button-container{
+    width: 100%;
+    background: #0a0a0a00;
+    position: absolute;
+    bottom: 0px;
+    
+
+}
+.dash-button{
+    border: 1px #0a0a0a;
+    background: #61080800;
+    height: 60px;
+    margin-left: 2px;
+    margin-right: 2px;
+    width: 30%;
+    cursor: pointer;
+}
+
+
+/* position contents at bottom */
 .card {
-    width: 400px;
-    height: 650px;
-    border-radius: 30px;
+    width: 350px;
+    height: 500px;
+    border-radius: 10px;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+
 }
+
+/* position at left bottom of card */
+.profile-info{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    background:linear-gradient(rgba(255, 255, 255, 0.582), rgb(255, 255, 255));
+    border-radius: 0 0 10px 10px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    overflow: none;
+}
+
+.profile-name {
+    position: relative;
+    left: 30px;
+    width: 100%;
+    color:#0a0a0a;
+    text-align: left;
+}
+
+.profile-bio {
+    margin-top: 2px;
+    text-align: left;
+    width: 80%;
+    margin-left: 30px;
+    color:#0a0a0a;
+    font-size: 12px;
+}
+
+.nav-center{
+    justify-content: center;
+    align-items: center;
+    font-family: 'Monoton';
+    font-weight: lighter;
+    font-size: 26px;
+    position: absolute;
+    top:10px;
+}
+
+.nav-center span {
+    color: rgb(233, 194, 24);
+}
+
+
+
+
+.age-text{
+    font-weight: 200;
+}
+
+
+
+/* svg */
+
+.guitar-svg{
+    height: 40px;
+    width: 40px;
+}
+.st0{fill:none;stroke:#000000;stroke-width:2;stroke-linejoin:round;stroke-miterlimit:10;}
+	.st1{fill:none;stroke:rgb(233, 194, 24);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;}

@@ -9,6 +9,12 @@ const Nav = () => {
         setShowLogin(true);
     }
 
+    const [showLogoutButton, setShowLogoutButton] = useState(false);
+
+    const [showLoginButton, setShowLoginButton] = useState(true);
+
+    // if the page is the dashboard, show the logout button
+    
 
     return(
         <nav>

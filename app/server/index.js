@@ -200,6 +200,18 @@ app.delete('/reset', async (req, res) => {
     }
 });
 
+// get all users from database
+app.get('/allusers', async (req, res) => {
+    const client = new MongoClient(uri);
+    try {
+        await client.connect();
+        const database = client.db('BAAND');
+        const users = await database.collection('users').find().toArray();
+        res.json(users);
+    } catch{
+        res.status(500).json({message: 'Something went wrong'});
+    }
+});
 
 
 
