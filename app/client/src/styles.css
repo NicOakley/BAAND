@@ -396,7 +396,8 @@ nav .logo span {
 
 /* Profile */
 .profile-container {
-	
+	position: absolute;
+	top: 50px;
 }
 .image-container {
 	justify-content: center;
@@ -495,6 +496,7 @@ nav .logo span {
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+	cursor: pointer;
 }
 
 /* position at left bottom of card */
@@ -510,6 +512,12 @@ nav .logo span {
 	cursor: pointer;
 	overflow: none;
 }
+
+.profile-info:hover{
+    background: linear-gradient(rgba(255, 254, 254, 0.651), rgb(255, 255, 255));
+}
+
+
 
 .profile-name {
 	position: relative;
@@ -565,6 +573,10 @@ nav .logo span {
 	margin-top: 10px;
 }
 
+.onboarding-profile-container {
+
+}
+
 .profile-container form {
 	width: 100%;
 	display: flex;
@@ -599,6 +611,7 @@ nav .logo span {
 	font-size: 14px;
 	font-family: 'Oswald', sans-serif;
 	font-weight: 600;
+	color: #0a0a0a;
 }
 
 .edit-button {
@@ -609,6 +622,7 @@ nav .logo span {
 	font-weight: 600;
 	height: 40px;
 	width: 100px;
+	color: #0a0a0a;
 }
 
 .edit-label {
@@ -713,4 +727,52 @@ nav .logo span {
 	stroke-linecap: round;
 	stroke-linejoin: round;
 	stroke-miterlimit: 10;
+}
+
+.jump {
+	animation: jump .5s ease-in-out;
+}
+
+@keyframes jump {
+	0% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-10px);
+	}
+	100% {
+		transform: translateY(0);
+	}
+}
+
+/* profile container scale for mobile */
+@media screen and (max-width: 600px) {
+	.profile-container {
+		scale: .75;
+		top: -40px;
+	}
+}
+
+/* always in top right */
+.logout {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	
+}
+
+.logout button {
+	border: none;
+	color: #000000;
+	font-size: 14px;
+	font-family: 'Oswald', sans-serif;
+	font-weight: 400;
+	border-radius: 5px;
+	padding: 5px;
+	background: #f3f3f38c;
+	cursor: pointer;
+}
+
+.logout button:hover {
+	background: #f3f3f3;
 }

@@ -5,6 +5,8 @@ import { useState } from 'react'
 
 const Home = () => {
 
+    if(localStorage.getItem('userID')) window.open('/dashboard', '_self');
+
     const [showRegister, setShowRegister] = useState(false);
 
     const handleClick = () => {

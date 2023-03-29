@@ -42,6 +42,9 @@ app.post('/signup', async (req, res) => {
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
 	}
+	finally{
+		await client.close();
+	}
 });
 
 app.get('/users', async (req, res) => {
@@ -81,6 +84,9 @@ app.post('/login', async (req, res) => {
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
 	}
+	finally{
+		await client.close();
+	}
 });
 
 // given email, return registration status
@@ -109,6 +115,40 @@ app.post('/regstatus', async (req, res) => {
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
 	}
+	finally{
+		await client.close();
+	}
+});
+
+// given userid, return registration status
+app.post('/regstatusID', async (req, res) => {
+	const client = new MongoClient(uri);
+	const { userid } = req.body;
+	const database = client.db('BAAND');
+	const users = database.collection('users');
+	try {
+		await client.connect();
+		const user = await users.findOne({ userid });
+		// user not registered
+		if (user.registered == 0) {
+			return res.status(201).json({ message: 'User not registered' });
+		}
+		// user registered but not onboarded
+		if (user.registered == 1) {
+			return res
+				.status(202)
+				.json({ message: 'User registered but not onboarded' });
+		}
+		// user onboarded
+		if (user.registered == 2) {
+			return res.status(203).json({ message: 'User onboarded' });
+		}
+	} catch {
+		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
+	}
 });
 
 app.post('/getuserid', async (req, res) => {
@@ -127,6 +167,9 @@ app.post('/getuserid', async (req, res) => {
 		return res.status(201).json({ id: id });
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
 	}
 });
 
@@ -176,10 +219,14 @@ app.post('/onboard', async (req, res) => {
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
 	}
+	finally{
+		await client.close();
+	}
 });
 
 // Get individual user
 app.get('/user', async (req, res) => {
+	console.log('getting user');
 	const client = new MongoClient(uri);
 	const userId = req.query.userId;
 
@@ -211,18 +258,97 @@ app.delete('/reset', async (req, res) => {
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
 	}
+	finally{
+		await client.close();
+	}
 });
 
 // get all users from database
 app.get('/allusers', async (req, res) => {
+	console.log('getting all users');
 	const client = new MongoClient(uri);
 	try {
 		await client.connect();
 		const database = client.db('BAAND');
 		const users = await database.collection('users').find().toArray();
-		res.json(users);
+		res.send(users);
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
+	}
+});
+
+// get all filtered users from database given userid 
+
+// get users filters (seeking)
+
+app.get('/allfiltered', async (req, res) => {
+	console.log('getting all filtered users');
+	const client = new MongoClient(uri);
+	const userId = req.query.userId;
+
+	try {
+		// get user filters (seeking)
+		await client.connect();
+		const database = client.db('BAAND');
+		const users = database.collection('users');
+		const query = { userid: userId };
+		const user = await users.findOne(query);
+		console.log(user.userid);
+		res.send(user);
+	} catch {
+		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
+	}
+});
+
+// get seeking array from user given userid
+app.get('/seeking', async (req, res) => {
+	console.log('getting seeking array');
+	const client = new MongoClient(uri);
+	const userID = req.query.userID;
+	try{
+		await client.connect();
+		const database = client.db('BAAND');
+		const users = database.collection('users');
+		const query = { userid: userID };
+		const user = await users.findOne(query);
+		console.log(user.seeking);
+		res.send(user.seeking);
+
+		
+	} catch {
+		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
+	}
+});
+
+// given userid, get registered status
+app.get('/registered', async (req, res) => {
+	console.log('getting registered status');
+	const client = new MongoClient(uri);
+	const userID = req.query.userID;
+	try{
+		await client.connect();
+		const database = client.db('BAAND');
+		const users = database.collection('users');
+		const query = { userid: userID };
+		const user = await users.findOne(query);
+		console.log(user.registered);
+		res.send(user.registered);
+
+		
+	} catch {
+		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
 	}
 });
 

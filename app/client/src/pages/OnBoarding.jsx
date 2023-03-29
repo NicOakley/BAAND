@@ -7,8 +7,32 @@ var currentQuestion = 0;
 const numQuestions = 5;
 const HOST_IP_ADDRESS = 'localhost';
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
+const userid = localStorage.getItem('userID');
 const OnBoarding = () => {
+	// If users registration status is 2 redirect to dashboard
+	const checkRegistered = async () => {
+		try {
+				// check registration status of user
+				const checkRegistered = await axios.post(
+					'http://localhost:8007/regstatusID',
+					{ userid });
+				
+				// status codes
+				const onboarded = checkRegistered.status === 203;
+
+				// if user is onboarded
+				if (onboarded) {
+					console.log('user onboarded');
+					window.open('/dashboard', '_self');
+				}
+			}
+			catch (error) {
+			console.log(error);
+		}
+	};
+
+	checkRegistered();
+
 	// Print userid from local storage
 	console.log(localStorage.getItem('userID'));
 	const currentUser = localStorage.getItem('userID');
@@ -192,7 +216,7 @@ const OnBoarding = () => {
 		} else if (currentQuestion == 3) {
 			setSeekingSelectionClass('invisible');
 			continueToNextStage();
-			setProfileClass('profile-container');
+			setProfileClass('onboarding-profile-container');
 		}
 	};
 

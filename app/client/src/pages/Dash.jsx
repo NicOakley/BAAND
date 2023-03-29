@@ -1,10 +1,25 @@
 import TinderCard from 'react-tinder-card';
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
+import axios, { all } from 'axios';
 var currentImage = 1;
 
 const Dash = () => {
-	console.log('currentImage: ' + currentImage);
+
+	// LOGIN CHECK
+
+	if( localStorage.getItem('userID') == null ) {
+		window.open('/', '_self');
+	}
+
+
+
+
+
+	const currentUserID = localStorage.getItem('userID');
+
+	console.log('currentUserID: ' + currentUserID);
+
+	const cardsToDisplay = [];
 
 	const [cards, setCards] = useState('card-container');
 
@@ -21,6 +36,12 @@ const Dash = () => {
 
 	const [instrumentArray, setInstrumentArray] = useState([]);
 	const [seekingInstrumentArray, setSeekingArray] = useState([]);
+
+	const [lastDirection, setLastDirection] = useState();
+
+	const [db, setDb] = useState([]);
+
+	const [seeking, setSeeking] = useState([]);
 
 	const handlePlaysClick = async (event) => {
 		// GUITAR - if guitar is clicked
@@ -393,7 +414,6 @@ const Dash = () => {
 		console.log('next image clicked');
 
 		currentImage++;
-		console.log(currentImage);
 		if (currentImage === 1) {
 			setImageInput1('edit-input');
 			setImageInput2('invisible');
@@ -523,6 +543,10 @@ const Dash = () => {
 	};
 
 	const guitarButton = () => {
+		document.getElementById('gButton').classList.add('jump');
+		document.getElementById('pButton').classList.remove('jump');
+		document.getElementById('cButton').classList.remove('jump');
+
 		console.log('guitar button clicked');
 		setProfile('invisible');
 		setChat('invisible');
@@ -531,6 +555,10 @@ const Dash = () => {
 
 	const profileButton = () => {
 		console.log('profile button clicked');
+		document.getElementById('gButton').classList.remove('jump');
+		document.getElementById('pButton').classList.add('jump');
+		document.getElementById('cButton').classList.remove('jump');
+
 		setChat('invisible');
 		setCards('invisible');
 		setProfile('profile-container');
@@ -538,35 +566,55 @@ const Dash = () => {
 
 	const chatButton = () => {
 		console.log('chat button clicked');
+		document.getElementById('gButton').classList.remove('jump');
+		document.getElementById('pButton').classList.remove('jump');
+		document.getElementById('cButton').classList.add('jump');
+
 		setProfile('invisible');
 		setCards('invisible');
 		setChat('chat-container');
 	};
 
-	const db = [
-		{
-			name: 'Jimi Hendrix',
-			age: '22',
-			url: 'https://www.rollingstone.com/wp-content/uploads/2018/06/rs-197621-84894709.jpg',
-			bio: "I'm a musician and I love to play guitar. I'm looking for someone who is also into music and can play an instrument. I'a",
-		},
-		{
-			name: 'aJimi Hendrix',
-			age: '22',
-			url: 'https://www.rollingstone.com/wp-content/uploads/2018/06/rs-197621-84894709.jpg',
-			bio: "I'm a musician and I love to play guitar. I'm looking for someone who is also into music and can play an instrument. I'a",
-		},
-		{
-			name: 'bJimi Hendrix',
-			age: '22',
-			url: 'https://www.rollingstone.com/wp-content/uploads/2018/06/rs-197621-84894709.jpg',
-			bio: "I'm a musician and I love to play guitar. I'm looking for someone who is also into music and can play an instrument. I'a",
-		},
-	];
+	// get users (name, age, images, bio) from mongodb
+	// once on page load, get all users from db
+	useEffect(() => {
+		// getFilteredUsers();
+		getUsers();
+		getSeeking();
+	}, []);
 
-	const characters = db;
-	const [lastDirection, setLastDirection] = useState();
+	async function getUsers() {
+		try {
+			const response = await axios.get('http://localhost:8007/allusers');
+			setDb(response.data);
+		} catch (error) {
+			console.log(error);
+		}
+	}
 
+	async function getSeeking() {
+		const response = await axios.get('http://localhost:8007/seeking', {
+			params: { userID: currentUserID },
+		});
+		setSeeking(response.data);
+		console.log('response: ' + response.data);
+	}
+
+	// for each user in db, check if contents of instruments array match any of the contents of the seeking array
+
+	for (var i = 0; i < db.length; i++) {
+		for (var j = 0; j < db[i].instruments.length; j++) {
+			for (var k = 0; k < seeking.length; k++) {
+				if (db[i].instruments[j] == seeking[k]) {
+					cardsToDisplay.push(db[i]);
+				}
+			}
+		}
+	}
+
+	console.log('cards:' + cardsToDisplay);
+
+	var characters = cardsToDisplay;
 	const swiped = (direction, nameToDelete) => {
 		console.log('removing: ' + nameToDelete);
 		setLastDirection(direction);
@@ -576,9 +624,18 @@ const Dash = () => {
 		console.log(name + ' left the screen!');
 	};
 
+	const logout = () => {
+		localStorage.removeItem('userID');
+		window.open('/', '_self');
+
+	};
+
 	return (
 		<>
 			<div className="dashboard">
+			<div className="logout">
+						<button onClick={logout}>Logout</button>
+					</div>
 				<div className="nav-center">
 					<div className="logo">
 						BAAND<span>.</span>
@@ -586,16 +643,16 @@ const Dash = () => {
 				</div>
 				<div className="swipe-container">
 					<div className={cards}>
-						{characters.map((character) => (
+						{characters?.map((character) => (
 							<TinderCard
 								preventSwipe={['up', 'down']}
 								className="swipe"
-								key={character.name}
+								key={character.userid}
 								onSwipe={(dir) => swiped(dir, character.name)}
 								onCardLeftScreen={() => outOfFrame(character.name)}
 							>
 								<div
-									style={{ backgroundImage: 'url(' + character.url + ')' }}
+									style={{ backgroundImage: 'url(' + character.image1 + ')' }}
 									className="card"
 								>
 									<svg
@@ -831,7 +888,7 @@ const Dash = () => {
 
 					{/* DASH BUTTONS */}
 					<div className="dash-button-container">
-						<button className="dash-button" onClick={chatButton}>
+						<button id="cButton" className="dash-button" onClick={chatButton}>
 							<svg
 								className="guitar-svg"
 								width="40px"
@@ -848,7 +905,7 @@ const Dash = () => {
 								/>
 							</svg>
 						</button>
-						<button className="dash-button" onClick={guitarButton}>
+						<button id="gButton" className="dash-button" onClick={guitarButton}>
 							<svg
 								className="guitar-svg"
 								version="1.1"
@@ -873,7 +930,11 @@ const Dash = () => {
 								<line className="st1" x1="13.2" y1="15.9" x2="16.1" y2="18.8" />
 							</svg>
 						</button>
-						<button className="dash-button" onClick={profileButton}>
+						<button
+							id="pButton"
+							className="dash-button"
+							onClick={profileButton}
+						>
 							<svg
 								width="40px"
 								height="40px"
