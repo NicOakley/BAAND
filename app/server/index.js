@@ -352,4 +352,82 @@ app.get('/registered', async (req, res) => {
 	}
 });
 
+// update given info on user given userid
+app.post('/update', async (req, res) => {
+	const client = new MongoClient(uri);
+	try {
+		const {
+			userid,
+			age,
+			name,
+			instruments,
+			seeking,
+			image1,
+			image2,
+			image3,
+			image4,
+			image5,
+			image6,
+			bio,
+		} = req.body;
+		const database = client.db('BAAND');
+		const users = database.collection('users');
+		console.log(req.body);
+
+		users.updateOne(
+			{ userid: userid },
+			{ $set: { age: age, name: name, instruments: instruments, seeking: seeking, image1: image1, image2: image2, image3: image3, image4: image4, image5: image5, image6: image6, bio: bio } }
+		);
+	} catch {
+		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
+	}
+});
+
+// add userid to liked array given userid
+app.post('/addliked', async (req, res) => {
+	const client = new MongoClient(uri)
+    const {userid, likedid} = req.body
+
+    try {
+        await client.connect()
+        const database = client.db('BAAND')
+        const users = database.collection('users')
+
+        const query = {userid: userid}
+        const updateDocument = {
+            $push: {liked: {userid: likedid}}
+        }
+        const user = await users.updateOne(query, updateDocument)
+        res.send(user)
+    } finally {
+        await client.close()
+    }
+});
+
+// get liked array given userid
+app.get('/getliked', async (req, res) => {
+	console.log('getting liked array');
+	const client = new MongoClient(uri);
+	const userID = req.query.userID;
+	try{
+		await client.connect();
+		const database = client.db('BAAND');
+		const users = database.collection('users');
+		const query = { userid: userID };
+		const user = await users.findOne(query);
+		console.log(user.liked);
+		res.send(user.liked);
+
+		
+	} catch {
+		res.status(500).json({ message: 'Something went wrong' });
+	}
+	finally{
+		await client.close();
+	}
+});
+
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));

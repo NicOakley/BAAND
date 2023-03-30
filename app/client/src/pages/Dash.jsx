@@ -6,14 +6,9 @@ var currentImage = 1;
 const Dash = () => {
 
 	// LOGIN CHECK
-
 	if( localStorage.getItem('userID') == null ) {
 		window.open('/', '_self');
 	}
-
-
-
-
 
 	const currentUserID = localStorage.getItem('userID');
 
@@ -42,6 +37,10 @@ const Dash = () => {
 	const [db, setDb] = useState([]);
 
 	const [seeking, setSeeking] = useState([]);
+
+
+	// profile editing
+
 
 	const handlePlaysClick = async (event) => {
 		// GUITAR - if guitar is clicked
@@ -409,6 +408,76 @@ const Dash = () => {
 		}
 	};
 
+	// handle click event
+	const updateProfile = async (event) => {
+		event.preventDefault();
+
+			var name = document.getElementById('nameInput').value;
+			var age = document.getElementById('ageInput').value;
+
+			// get image-text field values
+			var image1 = document.getElementById('imageInput1').value;
+			var image2 = document.getElementById('imageInput2').value;
+			var image3 = document.getElementById('imageInput3').value;
+			var image4 = document.getElementById('imageInput4').value;
+			var image5 = document.getElementById('imageInput5').value;
+			var image6 = document.getElementById('imageInput6').value;
+
+			// create array of images
+			// if the value of the image is not empty, add it to the array
+			var imageArray = [];
+			if (image1 != '') imageArray.push(image1);
+			if (image2 != '') imageArray.push(image2);
+			if (image3 != '') imageArray.push(image3);
+			if (image4 != '') imageArray.push(image4);
+			if (image5 != '') imageArray.push(image5);
+			if (image6 != '') imageArray.push(image6);
+
+			// make sure at least one image is filled out
+			var atLeastOneImage = false;
+			for (var i = 0; i < imageArray.length; i++) {
+				if (imageArray[i] != '') {
+					atLeastOneImage = true;
+					break;
+				}
+			}
+
+			// get bio-text field value
+			var bio = document.getElementById('bio').value;
+
+			// Error checking
+			if (
+				name == '' ||
+				age == '' ||
+				instrumentArray.length == 0 ||
+				seekingInstrumentArray.length == 0 ||
+				bio == '' ||
+				atLeastOneImage == false
+			) {
+				alert('Error - Please fill out all fields');
+			} else {
+				// send to server
+				const response = await axios.post(
+					'http://localhost:8007/onboard',
+					{
+						userid: currentUserID,
+						name: name,
+						age: age,
+						instruments: instrumentArray,
+						seeking: seekingInstrumentArray,
+						image1: image1,
+						image2: image2,
+						image3: image3,
+						image4: image4,
+						image5: image5,
+						image6: image6,
+						bio: bio,
+					}
+				);
+				alert('Profile updated!');
+			}
+		}
+
 	const nextImage = (e) => {
 		e.preventDefault();
 		console.log('next image clicked');
@@ -612,11 +681,29 @@ const Dash = () => {
 		}
 	}
 
+	const updateMatches = async (likedID) => {
+		try {
+			await axios.post('http://localhost:8007/addliked', {
+				userid: currentUserID,
+				likedid: likedID
+		});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const showFullProfile = () => {
+		console.log('show full profile clicked');
+	};
+
 	console.log('cards:' + cardsToDisplay);
 
 	var characters = cardsToDisplay;
-	const swiped = (direction, nameToDelete) => {
-		console.log('removing: ' + nameToDelete);
+	const swiped = (direction, char) => {
+		console.log('removing: ' + char.name);
+		if (direction == 'right') {
+			updateMatches(char.userid);
+		}
 		setLastDirection(direction);
 	};
 
@@ -648,7 +735,7 @@ const Dash = () => {
 								preventSwipe={['up', 'down']}
 								className="swipe"
 								key={character.userid}
-								onSwipe={(dir) => swiped(dir, character.name)}
+								onSwipe={(dir) => swiped(dir, character)}
 								onCardLeftScreen={() => outOfFrame(character.name)}
 							>
 								<div
@@ -671,7 +758,7 @@ const Dash = () => {
 											fill="rgb(233, 194, 24)"
 										></path>
 									</svg>
-									<div className="profile-info">
+									<div onClick={showFullProfile} className="profile-info">
 										<h2 className="profile-name">
 											{character.name},{' '}
 											<span className="age-text">{character.age}</span>
@@ -689,11 +776,12 @@ const Dash = () => {
 							{/* profile editing form */}
 							<form className="edit-form">
 								<label className="edit-label">Name</label>
-								<input className="edit-input" type="text" placeholder="Name" />
+								<input id="nameInput" className="edit-input" type="text" placeholder="Name" />
 								<label className="edit-label">Age</label>
-								<input className="edit-input" type="text" placeholder="Age" />
+								<input id="ageInput" className="edit-input" type="text" placeholder="Age" />
 								<label className="edit-label">Bio</label>
 								<textarea
+									id = "bio"
 									className="edit-input edit-bio"
 									type="text"
 									placeholder=""
@@ -874,7 +962,7 @@ const Dash = () => {
 								</button>
 							</div>
 						</div>
-						<button className="edit-button">Save</button>
+						<button onClick={updateProfile} className="edit-button">Save</button>
 					</div>
 
 					<div className={chat}>
