@@ -12,7 +12,8 @@ html {
 
 body {
 	text-align: center;
-	background: #0a0a0a;
+	/* background: #0a0a0a; */
+	background: #000000;
 	color: white;
 	height: 100%;
 	overflow-x: hidden;
@@ -75,13 +76,14 @@ body {
 .home .content {
 	height: 700px;
 	/* background:rgba(24, 24, 24, 0.993); */
-	background: #0a0a0a;
+	/* background: #0a0a0a; */
+	background: #000000 ;
 }
 
 .register-button {
 	font-family: 'Oswald', sans-serif;
 	font-weight: 400;
-	color: rgb(21, 27, 22);
+	color: black;
 	/* background: linear-gradient(57.37deg, #4d8a2f -6.87%, #11e747 7.8%); */
 	background: rgb(233, 194, 24);
 	border-radius: 25px;
@@ -96,7 +98,8 @@ body {
 }
 
 .register-button:hover {
-	color: #f3f3f3;
+	color: #2e2e2e;
+	background:rgb(255, 208, 0);
 }
 
 /* ========Navbar========= */
@@ -167,7 +170,8 @@ nav .logo span {
 .register-container {
 	width: 500px;
 	max-height: 700px;
-	background: #0a0a0a;
+	background: #000000 ;
+	/* background: #0a0a0a; */
 	border-radius: 25px;
 	padding: 20px;
 	display: grid;
@@ -206,7 +210,7 @@ nav .logo span {
 	font-size: 18px;
 	font-family: 'Oswald', sans-serif;
 	color: rgb(233, 194, 24);
-	background: #0a0a0a;
+	background: #000000 ;
 	border: 1px solid rgb(233, 194, 24);
 	margin-top: 10px;
 	text-align: center;
@@ -234,7 +238,8 @@ nav .logo span {
 }
 
 .register-container button:hover {
-	color: #f3f3f3;
+	color: #2e2e2e;
+	background:rgb(255, 208, 0);
 }
 
 .exit-button {
@@ -315,7 +320,7 @@ nav .logo span {
 	font-size: clamp(10px, 3vw, 20px);
 	font-family: 'Oswald', sans-serif;
 	color: rgb(233, 194, 24);
-	background: #0a0a0a;
+	background: black;
 	border: 1px solid rgb(255, 255, 255);
 	margin-top: 10px;
 	text-align: center;
@@ -352,8 +357,9 @@ nav .logo span {
 }
 
 .onboarding-next button {
-	background: #0a0a0a;
+	background: black;
 	border: none;
+	cursor: pointer;
 }
 
 .onboarding-next button svg {
@@ -385,7 +391,7 @@ nav .logo span {
 
 .selected {
 	background: rgb(233, 194, 24);
-	color: #0a0a0a;
+	color: black;
 }
 
 .invisible {
@@ -443,7 +449,10 @@ nav .logo span {
 	position: fixed;
 	top: 0;
 	left: 0;
-	background: rgba(255, 255, 255, 0);
+	/* background: rgba(0, 0, 0, 0); */
+
+	/* circle gradient */
+	background: #000000;
 }
 
 .dashboard .card-container {
@@ -506,7 +515,7 @@ nav .logo span {
 	width: 100%;
 	height: 100px;
 	background: linear-gradient(rgba(255, 255, 255, 0.582), rgb(255, 255, 255));
-	border-radius: 0 0 10px 10px;
+	border-radius: 10px 10px 10px 10px;
 	display: flex;
 	flex-direction: column;
 	cursor: pointer;
@@ -547,7 +556,7 @@ nav .logo span {
 	border: none;
 	cursor: pointer;
 	z-index: 1;
-	background: #0a0a0a;
+	background: black;
 }
 
 .nav-center {
@@ -611,7 +620,7 @@ nav .logo span {
 	font-size: 14px;
 	font-family: 'Oswald', sans-serif;
 	font-weight: 600;
-	color: #0a0a0a;
+	color: black;
 }
 
 .edit-button {
@@ -622,7 +631,7 @@ nav .logo span {
 	font-weight: 600;
 	height: 40px;
 	width: 100px;
-	color: #0a0a0a;
+	color: black;
 }
 
 .edit-label {

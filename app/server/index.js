@@ -41,8 +41,7 @@ app.post('/signup', async (req, res) => {
 		return res.status(201).json({ message: 'User created' });
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -83,8 +82,7 @@ app.post('/login', async (req, res) => {
 		}
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -114,8 +112,7 @@ app.post('/regstatus', async (req, res) => {
 		}
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -145,8 +142,7 @@ app.post('/regstatusID', async (req, res) => {
 		}
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -167,8 +163,7 @@ app.post('/getuserid', async (req, res) => {
 		return res.status(201).json({ id: id });
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -218,8 +213,7 @@ app.post('/onboard', async (req, res) => {
 		return res.status(201).json({ message: 'User onboarded' });
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -257,8 +251,7 @@ app.delete('/reset', async (req, res) => {
 		return res.status(201).json({ message: 'Database reset' });
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -274,13 +267,12 @@ app.get('/allusers', async (req, res) => {
 		res.send(users);
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
 
-// get all filtered users from database given userid 
+// get all filtered users from database given userid
 
 // get users filters (seeking)
 
@@ -300,8 +292,7 @@ app.get('/allfiltered', async (req, res) => {
 		res.send(user);
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -311,7 +302,7 @@ app.get('/seeking', async (req, res) => {
 	console.log('getting seeking array');
 	const client = new MongoClient(uri);
 	const userID = req.query.userID;
-	try{
+	try {
 		await client.connect();
 		const database = client.db('BAAND');
 		const users = database.collection('users');
@@ -319,12 +310,9 @@ app.get('/seeking', async (req, res) => {
 		const user = await users.findOne(query);
 		console.log(user.seeking);
 		res.send(user.seeking);
-
-		
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -334,7 +322,7 @@ app.get('/registered', async (req, res) => {
 	console.log('getting registered status');
 	const client = new MongoClient(uri);
 	const userID = req.query.userID;
-	try{
+	try {
 		await client.connect();
 		const database = client.db('BAAND');
 		const users = database.collection('users');
@@ -342,12 +330,9 @@ app.get('/registered', async (req, res) => {
 		const user = await users.findOne(query);
 		console.log(user.registered);
 		res.send(user.registered);
-
-		
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
@@ -376,35 +361,61 @@ app.post('/update', async (req, res) => {
 
 		users.updateOne(
 			{ userid: userid },
-			{ $set: { age: age, name: name, instruments: instruments, seeking: seeking, image1: image1, image2: image2, image3: image3, image4: image4, image5: image5, image6: image6, bio: bio } }
+			{
+				$set: {
+					age: age,
+					name: name,
+					instruments: instruments,
+					seeking: seeking,
+					image1: image1,
+					image2: image2,
+					image3: image3,
+					image4: image4,
+					image5: image5,
+					image6: image6,
+					bio: bio,
+				},
+			}
 		);
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });
 
 // add userid to liked array given userid
 app.post('/addliked', async (req, res) => {
-	const client = new MongoClient(uri)
-    const {userid, likedid} = req.body
+	const client = new MongoClient(uri);
+	const { userid, likedid } = req.body;
+	try {
+		await client.connect();
+		const database = client.db('BAAND');
+		const users = database.collection('users');
 
-    try {
-        await client.connect()
-        const database = client.db('BAAND')
-        const users = database.collection('users')
+		const query = { userid: userid };
+		const currentuser = await users.findOne(query);
 
-        const query = {userid: userid}
-        const updateDocument = {
-            $push: {liked: {userid: likedid}}
-        }
-        const user = await users.updateOne(query, updateDocument)
-        res.send(user)
-    } finally {
-        await client.close()
-    }
+		// check if likedid is already in liked array
+		for (var i = 0; i <= currentuser.liked.length; i++) {
+			console.log("in for loop")
+			if (currentuser.liked[i] == likedid) {
+				console.log("already liked");
+				return res.status(201).json({ message: 'Already liked' });
+			} else {
+				console.log("not liked yet");
+				// push likedid to liked array
+				const updateDocument = {
+					$push: { liked: likedid },
+				};
+
+				const user = await users.updateOne(query, updateDocument);
+				res.send(user);
+			}
+		}
+	} finally {
+		await client.close();
+	}
 });
 
 // get liked array given userid
@@ -412,7 +423,7 @@ app.get('/getliked', async (req, res) => {
 	console.log('getting liked array');
 	const client = new MongoClient(uri);
 	const userID = req.query.userID;
-	try{
+	try {
 		await client.connect();
 		const database = client.db('BAAND');
 		const users = database.collection('users');
@@ -420,12 +431,9 @@ app.get('/getliked', async (req, res) => {
 		const user = await users.findOne(query);
 		console.log(user.liked);
 		res.send(user.liked);
-
-		
 	} catch {
 		res.status(500).json({ message: 'Something went wrong' });
-	}
-	finally{
+	} finally {
 		await client.close();
 	}
 });

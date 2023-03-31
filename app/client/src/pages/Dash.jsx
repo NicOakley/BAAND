@@ -674,12 +674,13 @@ const Dash = () => {
 	for (var i = 0; i < db.length; i++) {
 		for (var j = 0; j < db[i].instruments.length; j++) {
 			for (var k = 0; k < seeking.length; k++) {
-				if (db[i].instruments[j] == seeking[k]) {
+				if (db[i].instruments[j] == seeking[k] && db[i].userid != currentUserID) {
 					cardsToDisplay.push(db[i]);
 				}
 			}
 		}
 	}
+
 
 	const updateMatches = async (likedID) => {
 		try {
@@ -702,7 +703,8 @@ const Dash = () => {
 	const swiped = (direction, char) => {
 		console.log('removing: ' + char.name);
 		if (direction == 'right') {
-			updateMatches(char.userid);
+			
+			// updateMatches(char.userid);
 		}
 		setLastDirection(direction);
 	};
