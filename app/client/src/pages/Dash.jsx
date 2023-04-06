@@ -1,9 +1,51 @@
 import TinderCard from 'react-tinder-card';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import axios, { all } from 'axios';
 var currentImage = 1;
 
 const Dash = () => {
+
+
+	// A component is changing an uncontrolled input to be controlled error happened here.
+	var currentUserName = useRef();
+	var currentUserAge = useRef();
+	var currentUserBio = useRef();
+	var currentUserImage1 = useRef();
+	var currentUserImage2 = useRef();
+	const currentUserImage3 = useRef();
+	const currentUserImage4 = useRef();
+	const currentUserImage5 = useRef();
+	const currentUserImage6 = useRef();
+
+	// get current user id from mongodb
+	async function getCurrentUser() {
+		try{
+			const response = await axios.get('http://localhost:8007/user', {
+		params: {
+			userId: localStorage.getItem('userID')
+		}
+	});
+		currentUserName.current = response.data.name;
+		currentUserAge.current = response.data.age;
+		currentUserBio.current = response.data.bio;
+		currentUserImage1.current = response.data.image1;
+		currentUserImage2.current = response.data.image2;
+		currentUserImage3.current = response.data.image3;
+		currentUserImage4.current = response.data.image4;
+		currentUserImage5.current = response.data.image5;
+		currentUserImage6.current = response.data.image6;
+		
+		}catch(error){
+			console.log(error);
+		}
+}
+
+useEffect(() => {
+	getCurrentUser();
+}, []);
+
+
+
 
 	// LOGIN CHECK
 	if( localStorage.getItem('userID') == null ) {
@@ -778,15 +820,16 @@ const Dash = () => {
 							{/* profile editing form */}
 							<form className="edit-form">
 								<label className="edit-label">Name</label>
-								<input id="nameInput" className="edit-input" type="text" placeholder="Name" />
+								<input id="nameInput" className="edit-input" type="text" placeholder="Name" defaultValue={currentUserName.current} />
 								<label className="edit-label">Age</label>
-								<input id="ageInput" className="edit-input" type="text" placeholder="Age" />
+								<input id="ageInput" className="edit-input" type="text" placeholder="Age" defaultValue={currentUserAge.current} />
 								<label className="edit-label">Bio</label>
 								<textarea
 									id = "bio"
 									className="edit-input edit-bio"
 									type="text"
 									placeholder=""
+									defaultValue={currentUserBio.current}
 								/>
 								<label className="edit-label">Profile Pictures</label>
 								<div className="edit-image-container">
@@ -796,36 +839,42 @@ const Dash = () => {
 										className={imageInput1}
 										type="text"
 										placeholder="Profile Picture 1"
+										defaultValue= {currentUserImage1.current}
 									/>
 									<input
 										id="imageInput2"
 										className={imageInput2}
 										type="text"
 										placeholder="Profile Picture 2"
+										defaultValue= {currentUserImage2.current}
 									/>
 									<input
 										id="imageInput3"
 										className={imageInput3}
 										type="text"
 										placeholder="Profile Picture 3"
+										defaultValue={currentUserImage3.current}
 									/>
 									<input
 										id="imageInput4"
 										className={imageInput4}
 										type="text"
 										placeholder="Profile Picture 4"
+										defaultValue= {currentUserImage4.current}
 									/>
 									<input
 										id="imageInput5"
 										className={imageInput5}
 										type="text"
 										placeholder="Profile Picture 5"
+										defaultValue= {currentUserImage5.current}
 									/>
 									<input
 										id="imageInput6"
 										className={imageInput6}
 										type="text"
 										placeholder="Profile Picture 6"
+										defaultValue= {currentUserImage6.current}
 									/>
 									<button onClick={nextImage}></button>
 								</div>
